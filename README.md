@@ -1,1 +1,1 @@
-I got $X from Hack Club for laptop but my chosen laptop is little more than X, hence it is a notifier that scraps selected products in amazon and check their current prize and the moment it is <= my amount, it will notify me through email ig
+I got $X from Hack Club for laptop but my chosen laptop is little more than X, hence it is a notifier that scraps selected products in amazon and check their current price and the moment it is <= my amount, it will notify me through email ig
