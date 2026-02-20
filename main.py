@@ -2,23 +2,27 @@ import json
 import requests
 from bs4 import BeautifulSoup
 import time
+from tools import currency_converter, headers
+
 
 with open("products.json") as p:
     products = json.loads(p.read())
 
-# usd_to_inr_amt =
+usd_amt = 551.59  # in usd
+
+inr_amt = currency_converter(usd_amt, "USD", "INR")
 
 for product in products:
     url = f"https://www.amazon.in/dp/{product}"
-    headers = {
-        "User-Agent": "Mozilla/5.0",
-        "Accept-Language": "en-IN,en;q=0.9"
-    }
+
     req = requests.get(url, headers=headers, allow_redirects=True)
-    # with open(product,"w") as f:
-    #     f.write(req.text)
+
     soup = BeautifulSoup(req.text, 'html.parser')
-    # print(soup.find(id="nav-logo-sprites"))
-    price = int((soup.find(class_="a-price-whole").text).replace(",","").replace(".",""))
-    # print(url)
+    price = int(
+        (soup.find(class_="a-price-whole").text).replace(",", "").replace(".", ""))
+
+    if price <= inr_amt:
+        print(f"found: {url}")
+        break
+
     time.sleep(1)
