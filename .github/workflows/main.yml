@@ -9,6 +9,13 @@ jobs:
   run-script:
     runs-on: ubuntu-latest
 
+    env:
+      SEND_EMAIL: ${{ secrets.SEND_EMAIL }}
+      USD_AMT: ${{ secrets.USD_AMT }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      FROM_EMAIL_PASS: ${{secrets.FROM_EMAIL_PASS}}
+      SCAPERAPI_KEY: ${{secrets.SCAPERAPI_KEY}}
+
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4

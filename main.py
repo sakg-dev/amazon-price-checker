@@ -16,19 +16,20 @@ usd_amt = os.getenv("USD_AMT")  # in usd
 
 inr_amt = currency_converter(usd_amt, "USD", "INR")
 
-for product in products:
-    url = f"https://www.amazon.in/dp/{product}"
+for asin in products:
+    url = f"https://www.amazon.in/dp/{asin}"
 
-    req = requests.get(url, headers=headers, allow_redirects=True)
-
-    soup = BeautifulSoup(req.text, 'html.parser')
-    print(soup)
-    price = int(
-        (soup.find(class_="a-price-whole").text).replace(",", "").replace(".", ""))
+    payload = {
+        'api_key': os.getenv("SCAPERAPI_KEY"),
+        'asin': asin,
+        'tld': 'in'
+    }
+    r = requests.get('https://api.scraperapi.com/structured/amazon/product',params=payload)
+    price = int((json.loads(r.text)["pricing"]).replace("₹","").replace(",",""))
 
     if price <= inr_amt:
-        send_email(os.getenv("SEND_EMAIL"), [os.getenv("USER_EMAIL")], "Laptop price dropped below your card's balance!",f"Hey Sak!\n\nFinally the price of your favourite laptop had dropped below your card's amount.\n\n Here's the link: {url}")
-        print("found")
+        send_email(os.getenv("SEND_EMAIL"), [os.getenv("USER_EMAIL")], "Laptop price dropped below your card's balance!",f"Hey Sak!\n\nFinally the price of your favourite laptop had dropped below your card's amount.\n\nHere's the link: {url}")
+        # print("found")
         break
 
     time.sleep(1)
