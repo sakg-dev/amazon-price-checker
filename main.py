@@ -27,7 +27,7 @@ for product in products:
         (soup.find(class_="a-price-whole").text).replace(",", "").replace(".", ""))
 
     if price <= inr_amt:
-        # send_email(os.getenv("SEND_EMAIL"), os.getenv("USER_EMAIL"), "Laptop price dropped below your card's balance!",f"Hey Sak!\n\nFinally the price of your favourite laptop had dropped below your card's amount.\n\n Here's the link: {url}")
+        send_email(os.getenv("SEND_EMAIL"), [os.getenv("USER_EMAIL")], "Laptop price dropped below your card's balance!",f"Hey Sak!\n\nFinally the price of your favourite laptop had dropped below your card's amount.\n\n Here's the link: {url}")
         print("found")
         break
 

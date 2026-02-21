@@ -1,5 +1,8 @@
 from bs4 import BeautifulSoup
 import requests
+import smtplib
+from email.mime.text import MIMEText
+import os
 
 headers = {
     "User-Agent": "Mozilla/5.0",
@@ -16,5 +19,13 @@ def currency_converter(amt, from_, to):
     return float(val)
 
 
-def send_email(from_, to, subject, message):
-    pass
+def send_email(from_, tos, subject, message):
+    msg = MIMEText(message)
+    msg['Subject'] = subject
+    msg['From'] = from_
+    msg['To'] = ", ".join(tos)
+
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp_server:
+        smtp_server.login(from_, os.getenv("FROM_EMAIL_PASS"))
+        smtp_server.sendmail(from_, tos, msg.as_string())
+    print("Message sent!")
